@@ -58,5 +58,5 @@ docs/_build/
 target/
 
 TotalDebtEquitymrq.csv
-YAHOO-INDEX_GSPC.csv
 intraQuarter/
+key_stats.csv
