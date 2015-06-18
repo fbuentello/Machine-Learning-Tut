@@ -57,7 +57,8 @@ docs/_build/
 # PyBuilder
 target/
 
-TotalDebtEquitymrq.csv
-intraQuarter/
-key_stats.csv
 env3/
+env/
+data/*
+!data/YAHOO-INDEX_GSPC.csv
+authtoken.p

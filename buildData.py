@@ -11,7 +11,7 @@ style.use("dark_background")
 
 import re
 
-path = "./intraQuarter"
+path = "./data/intraQuarter"
 
 def Key_Stats(gather=["Total Debt/Equity",
 					  'Trailing P/E',
@@ -103,7 +103,7 @@ def Key_Stats(gather=["Total Debt/Equity",
 								 'Status'])
 
 	# get data from yahoo csv file
-	sp500_df = pd.DataFrame.from_csv("YAHOO-INDEX_GSPC.csv")
+	sp500_df = pd.DataFrame.from_csv("./data/YAHOO-INDEX_GSPC.csv")
 
 	ticker_list = []
 	start_time = time.time()
@@ -267,8 +267,8 @@ def Key_Stats(gather=["Total Debt/Equity",
 
 
 
-	df.to_csv("key_stats.csv")
+	df.to_csv("./data/key_stats.csv")
 	print("--- %s seconds ---" % (time.time() - start_time))
-	print "key_stats.csv is done."
+	print ("key_stats.csv is done.")
 
 Key_Stats()

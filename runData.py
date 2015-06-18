@@ -43,11 +43,12 @@ FEATURES =  ['DE Ratio',
 			 'Shares Short (prior ']
 
 def Build_Data_Set():
-	data_df = pd.DataFrame.from_csv("key_stats.csv")
+	data_df = pd.DataFrame.from_csv("./data/key_stats.csv")
 
 	# data_df = data_df[:1000]
-
-	X = np.array(data_df[FEATURES].values)#.tolist())
+	# Randomize data
+	data_df = data_df.reindex(np.random.permutation(data_df.index))
+	X = np.array(data_df[FEATURES].values)
 
 	y = (data_df["Status"]
 		 .replace("underperform",0)
