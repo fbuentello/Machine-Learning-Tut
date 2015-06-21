@@ -11,7 +11,21 @@ style.use("dark_background")
 
 import re
 
-def Build_Yahoo(gather=["Total Debt/Equity",
+def fileToSave(withNA,enhanced):
+
+	fileName = "yahooReq_sample"
+	if withNA == True:
+		fileName += "_WITH_NA"
+	else:
+		fileName += "_NO_NA"
+
+	if enhanced == True:
+		fileName +="_enhanced"
+
+	fileName +=".csv"
+	return fileName
+
+def Build_Yahoo(withNA, enhanced, gather=["Total Debt/Equity",
 					  'Trailing P/E',
 					  'Price/Sales',
 					  'Price/Book',
@@ -128,7 +142,7 @@ def Build_Yahoo(gather=["Total Debt/Equity",
 					value_list.append(value)
 
 
-			if value_list.count("N/A") > 0:
+			if value_list.count("N/A") > (0,15)[bool(withNA)]:
 				pass
 			else:
 
@@ -185,8 +199,9 @@ def Build_Yahoo(gather=["Total Debt/Equity",
 
 
 
-	df.to_csv("./data/yahooReq_sample_NO_NA.csv")
+	df.to_csv("./data/"+fileToSave(withNA,enhanced))
 	print("--- %s seconds ---" % (time.time() - start_time))
-	print ("yahooReq_sample_WITH_NA.csv is done.")
+	print (fileToSave(withNA,enhanced)+" is done.")
 
-Build_Yahoo()
+# Build_Yahoo(include NA?, want enhanced?)
+Build_Yahoo(False,True)

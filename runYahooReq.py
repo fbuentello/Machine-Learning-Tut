@@ -7,6 +7,20 @@ import statistics
 
 style.use("ggplot")
 
+def fileToSave(withNA,enhanced,fileName):
+
+	fileName = fileName
+	if withNA == True:
+		fileName += "_WITH_NA"
+	else:
+		fileName += "_NO_NA"
+
+	if enhanced == True:
+		fileName +="_enhanced"
+
+	fileName +=".csv"
+	print("using: ",fileName)
+	return fileName
 
 FEATURES =  ['DE Ratio',
 			 'Trailing P/E',
@@ -44,8 +58,8 @@ FEATURES =  ['DE Ratio',
 			 'Short % of Float',
 			 'Shares Short (prior ']
 
-def Build_Data_Set():
-	data_df = pd.DataFrame.from_csv("./data/key_stats_acc_perf_NO_NA.csv")
+def Build_Data_Set(withNA,enhanced):
+	data_df = pd.DataFrame.from_csv("./data/"+fileToSave(withNA,enhanced,"key_stats_acc_perf"))
 
 	# Data_df = data_df[:1000]
 	# Randomize data
@@ -69,7 +83,7 @@ def Build_Data_Set():
 	return X,y,Z
 
 
-def Analysis():
+def Analysis(withNA,enhanced):
 
 	test_size = 1000
 
@@ -78,7 +92,7 @@ def Analysis():
 	if_market = 0 # If you invested in the Market
 	if_strat = 0 # If you invested in the Strategy
 
-	X, y , Z = Build_Data_Set()
+	X, y , Z = Build_Data_Set(withNA,enhanced)
 	print(len(X))
 
 	# Using SVC
@@ -104,7 +118,7 @@ def Analysis():
 
 
 
-	data_df = pd.DataFrame.from_csv("./data/yahooReq_sample_NO_NA.csv")
+	data_df = pd.DataFrame.from_csv("./data/"+fileToSave(withNA,enhanced,"yahooReq_sample"))
 
 	# Replace NaN with 0(zero) or -999. so it doesnt skew the data.
 	data_df = data_df.replace("NaN",0).replace("N/A",0)
@@ -131,5 +145,5 @@ def Analysis():
 	print("invest_List:",invest_list)
 	print("invest_List size:",len(invest_list))
 
-
-Analysis()
+# Analysis(include NA?, want enhanced?)
+Analysis(False,False)

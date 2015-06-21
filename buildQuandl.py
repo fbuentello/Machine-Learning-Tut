@@ -18,7 +18,7 @@ def fileToSave(withNA,enhanced):
 
 	fileName = "key_stats_acc_perf"
 	if withNA == True:
-		fileName += "_With_NA"
+		fileName += "_WITH_NA"
 	else:
 		fileName += "_NO_NA"
 
@@ -255,7 +255,7 @@ def Key_Stats(withNA, enhanced, gather=["Total Debt/Equity",
 						status = 0
 
 
-					if value_list.count("N/A") >(0,15)[bool(withNA)]:
+					if value_list.count("N/A") > (0,15)[bool(withNA)]:
 						pass
 					else:
 
@@ -313,7 +313,7 @@ def Key_Stats(withNA, enhanced, gather=["Total Debt/Equity",
 	print(fileToSave(withNA,enhanced))
 	df.to_csv("./data/"+fileToSave(withNA,enhanced))
 	print("--- %s seconds ---" % (time.time() - start_time))
-	print ("key_stats_acc_perf_NO_NA.csv is done.")
+	print (fileToSave(withNA,enhanced)+" is done.")
 
 # Key_Stats(include NA?, want enhanced?)
 Key_Stats(True,True)
