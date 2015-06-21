@@ -5,7 +5,18 @@ import pandas as pd
 from matplotlib import style
 import statistics
 
+from collections import Counter
+
 style.use("ggplot")
+
+how_much_better = 10
+
+def Status_Calc(stock, sp500):
+	difference = stock-sp500
+	if difference > how_much_better:
+		return 1
+	else:
+		return 0
 
 def fileToSave(withNA,enhanced,fileName):
 
@@ -19,8 +30,9 @@ def fileToSave(withNA,enhanced,fileName):
 		fileName +="_enhanced"
 
 	fileName +=".csv"
-	print("using: ",fileName)
+	# print("using: ",fileName)
 	return fileName
+
 
 FEATURES =  ['DE Ratio',
 			 'Trailing P/E',
@@ -58,6 +70,7 @@ FEATURES =  ['DE Ratio',
 			 'Short % of Float',
 			 'Shares Short (prior ']
 
+# Build_Data_Set(include NA?, want enhanced?)
 def Build_Data_Set(withNA,enhanced):
 	data_df = pd.DataFrame.from_csv("./data/"+fileToSave(withNA,enhanced,"key_stats_acc_perf"))
 
@@ -68,12 +81,14 @@ def Build_Data_Set(withNA,enhanced):
 	# Replace NaN with 0(zero) or -999. so it doesnt skew the data.
 	data_df = data_df.replace("NaN",0).replace("N/A",0)
 
+	# Add new Field that corresponds with Status_Calc()
+	data_df["Status2"] = list(map(Status_Calc, data_df["stock_p_change"], data_df["sp500_p_change"]))
 	X = np.array(data_df[FEATURES].values)
 
-	y = (data_df["Status"]
-		 .replace("underperform",0)
-		 .replace("outperform",1)
-		 .values.tolist())
+	# check against Status2 instead of Status
+	y = (data_df["Status2"].values.tolist())
+	# y = (data_df["Status"] .replace("underperform",0) .replace("outperform",1) .values.tolist())
+
 
 	X = preprocessing.scale(X)
 
@@ -82,7 +97,7 @@ def Build_Data_Set(withNA,enhanced):
 
 	return X,y,Z
 
-
+# Analysis(include NA?, want enhanced?)
 def Analysis(withNA,enhanced):
 
 	test_size = 1000
@@ -142,8 +157,38 @@ def Analysis(withNA,enhanced):
 			# print(Z[i])
 			invest_list.append(Z[i])
 
-	print("invest_List:",invest_list)
-	print("invest_List size:",len(invest_list))
+	# print("invest_list:",invest_list)
+	# print("invest_list size:",len(invest_list))
 
-# Analysis(include NA?, want enhanced?)
-Analysis(False,False)
+	return invest_list
+
+
+
+def Main():
+
+	final_list = []
+	loops = 5
+
+	# Run code Multiple Times
+	for x in range(loops):
+		stock_list = Analysis(False,True)
+
+		# Add to final_list
+		for z in stock_list:
+			final_list.append(z)
+
+	#count of final_list
+	x = Counter(final_list)
+
+	#divider
+	print(15*"_")
+
+	for each in x:
+		# Does this company show up multiple times?!
+		if x[each] > loops - (loops/3):
+			print(each)
+
+
+
+
+Main()
