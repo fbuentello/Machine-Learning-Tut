@@ -13,7 +13,23 @@ import re
 
 path = "./data/intraQuarter"
 
-def Key_Stats(gather=["Total Debt/Equity",
+
+def fileToSave(withNA,enhanced):
+
+	fileName = "key_stats_acc_perf"
+	if withNA == True:
+		fileName += "_With_NA"
+	else:
+		fileName += "_NO_NA"
+
+	if enhanced == True:
+		fileName +="_enhanced"
+
+	fileName +=".csv"
+	return fileName
+
+
+def Key_Stats(withNA, enhanced, gather=["Total Debt/Equity",
 					  'Trailing P/E',
 					  'Price/Sales',
 					  'Price/Book',
@@ -233,14 +249,13 @@ def Key_Stats(gather=["Total Debt/Equity",
 
 					difference = stock_p_change-sp500_p_change
 
-					if difference > 0:
-						status = "outperform"
+					if difference > (0,5)[bool(enhanced)]:
+						status = 1
 					else:
-						status = "underperform"
+						status = 0
 
 
-					# if value_list.count("N/A") > 15:
-					if value_list.count("N/A") > 0:
+					if value_list.count("N/A") >(0,15)[bool(withNA)]:
 						pass
 					else:
 
@@ -295,10 +310,10 @@ def Key_Stats(gather=["Total Debt/Equity",
 				except Exception as e:
 					pass
 
-
-	# df.to_csv("./data/key_stats_acc_perf_WITH_NA.csv")
-	df.to_csv("./data/key_stats_acc_perf_NO_NA.csv")
+	print(fileToSave(withNA,enhanced))
+	df.to_csv("./data/"+fileToSave(withNA,enhanced))
 	print("--- %s seconds ---" % (time.time() - start_time))
 	print ("key_stats_acc_perf_NO_NA.csv is done.")
 
-Key_Stats()
+# Key_Stats(include NA?, want enhanced?)
+Key_Stats(True,True)
