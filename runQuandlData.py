@@ -47,7 +47,7 @@ FEATURES =  ['DE Ratio',
 def Build_Data_Set():
 	data_df = pd.DataFrame.from_csv("./data/key_stats_acc_perf_NO_NA.csv")
 
-	# data_df = data_df[:1000]
+	# Data_df = data_df[:1000]
 	# Randomize data
 	data_df = data_df.reindex(np.random.permutation(data_df.index))
 
@@ -63,6 +63,7 @@ def Build_Data_Set():
 
 	X = preprocessing.scale(X)
 
+	# Were gonna check for precentage change
 	Z = np.array(data_df[["stock_p_change","sp500_p_change"]])
 
 	return X,y,Z
@@ -74,8 +75,8 @@ def Analysis():
 
 	invest_amount = 10000
 	total_invests = 0
-	if_market = 0
-	if_strat = 0
+	if_market = 0 # If you invested in the Market
+	if_strat = 0 # If you invested in the Strategy
 
 	X, y , Z = Build_Data_Set()
 	print(len(X))
@@ -88,7 +89,7 @@ def Analysis():
 
 	# Now run the Test Data.
 	for x in range(1, test_size+1):
-		# if our prediction was correct
+		# If our prediction was correct
 		if clf.predict(X[-x])[0] == y[-x]:
 			correct_count += 1
 
@@ -103,7 +104,7 @@ def Analysis():
 
 	print("Accuracy:", str(round((correct_count/test_size) * 100,3))+"%")
 
-	#how many trades we made
+	# How many trades we made
 	print ("Total Trades:", total_invests)
 
 	# How much money you made if you followed the Strategy
