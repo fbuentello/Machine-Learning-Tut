@@ -239,6 +239,7 @@ def Key_Stats(gather=["Total Debt/Equity",
 						status = "underperform"
 
 
+					# if value_list.count("N/A") > 15:
 					if value_list.count("N/A") > 0:
 						pass
 					else:
@@ -295,7 +296,7 @@ def Key_Stats(gather=["Total Debt/Equity",
 					pass
 
 
-
+	# df.to_csv("./data/key_stats_acc_perf_WITH_NA.csv")
 	df.to_csv("./data/key_stats_acc_perf_NO_NA.csv")
 	print("--- %s seconds ---" % (time.time() - start_time))
 	print ("key_stats_acc_perf_NO_NA.csv is done.")
